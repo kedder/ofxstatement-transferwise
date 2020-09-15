@@ -1,35 +1,57 @@
-from typing import Iterable
+from typing import Set, List, Iterable, TextIO, Optional
+import itertools
+from decimal import Decimal
 
 from ofxstatement.plugin import Plugin
-from ofxstatement.parser import StatementParser
-from ofxstatement.statement import Statement, StatementLine
+from ofxstatement.parser import CsvStatementParser
+from ofxstatement.statement import (
+    Statement,
+    StatementLine,
+    BankAccount,
+    generate_unique_transaction_id,
+)
 
 
 class TransferwisePlugin(Plugin):
-    """Plugin for transferwise statements"""
+    """Transferwise CSV format"""
 
     def get_parser(self, filename: str) -> "TransferwiseParser":
-        return TransferwiseParser(filename)
+        return TransferwiseParser(open(filename, "rt"))
 
 
-class TransferwiseParser(StatementParser[str]):
-    def __init__(self, filename: str) -> None:
-        super().__init__()
-        self.filename = filename
+class TransferwiseParser(CsvStatementParser):
+    date_format: str = "%d-%m-%Y"
+    mappings = {
+        "amount": 2,
+        "date": 1,
+        "memo": 4,
+        "refnum": 0,
+        "payee": 11,
+    }
+
+    def __init__(self, fin: TextIO) -> None:
+        super().__init__(fin)
+        self._unique: Set[str] = set()
 
     def parse(self) -> Statement:
-        """Main entry point for parsers
+        stmt = super().parse()
+        return stmt
 
-        super() implementation will call to split_records and parse_record to
-        process the file.
-        """
-        with open(self.filename, "r"):
-            return super().parse()
+    def split_records(self) -> Iterable[List[str]]:
+        items = super().split_records()
+        # Skip the header line
+        yield from itertools.islice(items, 1, None)
 
-    def split_records(self) -> Iterable[str]:
-        """Return iterable object consisting of a line per transaction"""
-        return []
-
-    def parse_record(self, line: str) -> StatementLine:
+    def parse_record(self, line: List[str]) -> Optional[StatementLine]:
         """Parse given transaction line and return StatementLine object"""
-        return StatementLine()
+        sl = super().parse_record(line)
+        if sl is None:
+            return None
+        sl.id = generate_unique_transaction_id(sl, self._unique)
+        payee_acc_no = line[12]
+        if payee_acc_no:
+            sl.bank_account_to = BankAccount("", payee_acc_no)
+
+        assert sl.amount is not None
+        sl.trntype = "DEBIT" if sl.amount > Decimal(0) else "CREDIT"
+        return sl

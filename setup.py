@@ -4,7 +4,7 @@
 from setuptools import find_packages
 from distutils.core import setup
 
-version = "0.0.1"
+version = "0.9.0"
 
 with open("README.md") as f:
     long_description = f.read()
@@ -34,7 +34,7 @@ setup(
     namespace_packages=["ofxstatement", "ofxstatement.plugins"],
     entry_points={
         "ofxstatement": [
-            "transferwise = ofxstatement.plugins.transferwise:TransferwisePlugin"  # noqa
+            "transferwise = ofxstatement.plugins.transferwise:TransferwisePlugin"
         ]
     },
     install_requires=["ofxstatement"],

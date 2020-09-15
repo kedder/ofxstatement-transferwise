@@ -14,3 +14,8 @@ def test_transferwise() -> None:
     statement = parser.parse()
 
     assert statement is not None
+
+    assert len(statement.lines) == 5
+    # all ids are unique
+    assert len(set(ln.id for ln in statement.lines)) == 5
+    assert all(ln.amount for ln in statement.lines)
