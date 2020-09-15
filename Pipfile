@@ -10,7 +10,7 @@ black = "*"
 
 [packages]
 ofxstatement = "*"
-ofxstatement-sample = {editable = true,path = "."}
+ofxstatement-sample = {editable = true, path = "."}
 
 [pipenv]
 allow_prereleases = true

@@ -5,14 +5,14 @@ from ofxstatement.parser import StatementParser
 from ofxstatement.statement import Statement, StatementLine
 
 
-class SamplePlugin(Plugin):
-    """Sample plugin (for developers only)"""
+class TransferwisePlugin(Plugin):
+    """Plugin for transferwise statements"""
 
-    def get_parser(self, filename: str) -> "SampleParser":
-        return SampleParser(filename)
+    def get_parser(self, filename: str) -> "TransferwiseParser":
+        return TransferwiseParser(filename)
 
 
-class SampleParser(StatementParser[str]):
+class TransferwiseParser(StatementParser[str]):
     def __init__(self, filename: str) -> None:
         super().__init__()
         self.filename = filename
@@ -23,7 +23,7 @@ class SampleParser(StatementParser[str]):
         super() implementation will call to split_records and parse_record to
         process the file.
         """
-        with open(self.filename, "r") as f:
+        with open(self.filename, "r"):
             return super().parse()
 
     def split_records(self) -> Iterable[str]:

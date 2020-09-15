@@ -2,11 +2,11 @@ import os
 
 from ofxstatement.ui import UI
 
-from ofxstatement.plugins.sample import SamplePlugin
+from ofxstatement.plugins.transferwise import TransferwisePlugin
 
 
-def test_sample() -> None:
-    plugin = SamplePlugin(UI(), {})
+def test_transferwise() -> None:
+    plugin = TransferwisePlugin(UI(), {})
     here = os.path.dirname(__file__)
     sample_filename = os.path.join(here, "sample-statement.csv")
 
