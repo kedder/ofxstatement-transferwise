@@ -28,7 +28,6 @@ class TransferwiseParser(CsvStatementParser):
         "date": 1,
         "memo": 4,
         "refnum": 0,
-        "payee": 11,
     }
 
     def __init__(
@@ -61,6 +60,8 @@ class TransferwiseParser(CsvStatementParser):
             # Skip lines in some other currencies
             return None
 
+        sl.memo = self._make_memo(line)
+
         sl.id = generate_unique_transaction_id(sl, self._unique)
         payee_acc_no = line[12]
         if payee_acc_no:
@@ -69,3 +70,17 @@ class TransferwiseParser(CsvStatementParser):
         assert sl.amount is not None
         sl.trntype = "DEBIT" if sl.amount > Decimal(0) else "CREDIT"
         return sl
+
+    def _make_memo(self, line: List[str]) -> str:
+        descr = line[4]
+        payref = line[5]
+        exc_from = line[7]
+        exc_to = line[8]
+        exc_rate = line[9]
+
+        memo = descr
+        if payref:
+            memo += f" ({payref})"
+        if exc_from and exc_to and exc_rate:
+            memo += f", {exc_rate} {exc_from}/{exc_to}"
+        return memo
