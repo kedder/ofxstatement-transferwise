@@ -16,7 +16,9 @@ class TransferwisePlugin(Plugin):
     """Transferwise CSV format"""
 
     def get_parser(self, filename: str) -> "TransferwiseParser":
-        return TransferwiseParser(open(filename, "rt"))
+        default_ccy = self.settings.get("currency")
+        account_id = self.settings.get("account")
+        return TransferwiseParser(open(filename, "rt"), default_ccy, account_id)
 
 
 class TransferwiseParser(CsvStatementParser):
@@ -29,12 +31,18 @@ class TransferwiseParser(CsvStatementParser):
         "payee": 11,
     }
 
-    def __init__(self, fin: TextIO) -> None:
+    def __init__(
+        self, fin: TextIO, currency: str = None, account_id: str = None
+    ) -> None:
         super().__init__(fin)
+        self.currency = currency
+        self.account_id = account_id
         self._unique: Set[str] = set()
 
     def parse(self) -> Statement:
         stmt = super().parse()
+        stmt.currency = self.currency
+        stmt.account_id = self.account_id
         return stmt
 
     def split_records(self) -> Iterable[List[str]]:
@@ -47,6 +55,12 @@ class TransferwiseParser(CsvStatementParser):
         sl = super().parse_record(line)
         if sl is None:
             return None
+
+        ccy = line[3]
+        if ccy != self.currency:
+            # Skip lines in some other currencies
+            return None
+
         sl.id = generate_unique_transaction_id(sl, self._unique)
         payee_acc_no = line[12]
         if payee_acc_no:

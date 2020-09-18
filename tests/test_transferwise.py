@@ -6,7 +6,8 @@ from ofxstatement.plugins.transferwise import TransferwisePlugin
 
 
 def test_transferwise() -> None:
-    plugin = TransferwisePlugin(UI(), {})
+    config = {"currency": "USD", "account": "TW1"}
+    plugin = TransferwisePlugin(UI(), config)
     here = os.path.dirname(__file__)
     sample_filename = os.path.join(here, "sample-statement.csv")
 
