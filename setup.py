@@ -4,7 +4,7 @@
 from setuptools import find_packages
 from distutils.core import setup
 
-version = "0.9.0"
+version = "1.0.0"
 
 with open("README.md") as f:
     long_description = f.read()
@@ -17,6 +17,7 @@ setup(
     url="https://github.com/kedder/ofxstatement",
     description=("Transferwise plugin for ofxstatement"),
     long_description=long_description,
+    long_description_content_type='text/markdown',
     license="GPLv3",
     keywords=["ofx", "banking", "statement"],
     classifiers=[
