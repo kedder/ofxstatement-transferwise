@@ -17,7 +17,7 @@ setup(
     url="https://github.com/kedder/ofxstatement",
     description=("Transferwise plugin for ofxstatement"),
     long_description=long_description,
-    long_description_content_type='text/markdown',
+    long_description_content_type="text/markdown",
     license="GPLv3",
     keywords=["ofx", "banking", "statement"],
     classifiers=[
