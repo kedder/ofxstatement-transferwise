@@ -14,7 +14,7 @@ setup(
     version=version,
     author="Andrey Lebedev",
     author_email="andrey@lebedev.lt",
-    url="https://github.com/kedder/ofxstatement",
+    url="https://github.com/kedder/ofxstatement-transferwise",
     description=("Transferwise plugin for ofxstatement"),
     long_description=long_description,
     long_description_content_type="text/markdown",
