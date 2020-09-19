@@ -10,7 +10,7 @@ Configuration can be edited with `ofxstatement edit-config` command. These
 configuration parameters are understood by this plugin:
 
 
-| name       | required? | Description               |
+| Name       | Required? | Description               |
 |------------|-----------|---------------------------|
 | `account`  | optional  | Name for this account     |
 | `currency` | required  | Currency for this account |
