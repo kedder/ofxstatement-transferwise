@@ -24,9 +24,9 @@ class TransferwisePlugin(Plugin):
 class TransferwiseParser(CsvStatementParser):
     date_format: str = "%d-%m-%Y"
     mappings = {
-        "amount": 2,
+        "amount": 3,
         "date": 1,
-        "memo": 4,
+        "memo": 5,
         "refnum": 0,
     }
 
@@ -55,7 +55,7 @@ class TransferwiseParser(CsvStatementParser):
         if sl is None:
             return None
 
-        ccy = line[3]
+        ccy = line[4]
         if ccy != self.currency:
             # Skip lines in some other currencies
             return None
