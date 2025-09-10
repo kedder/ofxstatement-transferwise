@@ -1,1 +1,5 @@
 include README.md
+include Makefile
+include Pipfile
+include Pipfile.lock
+recursive-include tests *.csv
