@@ -35,7 +35,7 @@ setup(
     namespace_packages=["ofxstatement", "ofxstatement.plugins"],
     entry_points={
         "ofxstatement": [
-            "transferwise = ofxstatement.plugins.transferwise:TransferwisePlugin"
+            "transferwise = ofxstatement_wise.wise:TransferwisePlugin"
         ]
     },
     install_requires=["ofxstatement"],

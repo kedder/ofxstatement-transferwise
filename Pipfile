@@ -12,7 +12,7 @@ dataclasses = "*"  # required by black on python-3.6
 
 [packages]
 ofxstatement = "*"
-ofxstatement-sample = {editable = true, path = "."}
+ofxstatement-transferwise = {editable = true, path = "."}
 
 [pipenv]
 allow_prereleases = true
