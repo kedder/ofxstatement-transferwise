@@ -31,7 +31,7 @@ class TransferwiseParser(CsvStatementParser):
     }
 
     def __init__(
-        self, fin: TextIO, currency: str = None, account_id: str = None
+        self, fin: TextIO, currency: str | None = None, account_id: str | None = None
     ) -> None:
         super().__init__(fin)
         self.currency = currency
