@@ -2,7 +2,7 @@ import os
 
 from ofxstatement.ui import UI
 
-from ofxstatement.plugins.transferwise import TransferwisePlugin
+from ofxstatement_wise.wise import TransferwisePlugin
 
 
 def test_transferwise() -> None:

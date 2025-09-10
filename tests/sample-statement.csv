@@ -1,6 +1,6 @@
-"TransferWise ID",Date,Amount,Currency,Description,"Payment Reference","Running Balance","Exchange From","Exchange To","Exchange Rate","Payer Name","Payee Name","Payee Account Number",Merchant,"Total fees"
-TRANSFER-175545673,24-08-2020,-357.38,USD,"Sent money to John Doe","Moving to Revolut",787.62,USD,EUR,0.84840,,"John Doe","LT21 1111 2222 3333 4444",,11.35
-TRANSFER-175545673,24-08-2020,-11.35,USD,"TransferWise Charges for: TRANSFER-175545673","Sending money",776.27,,,,,TransferWise,,,0
-TRANSFER-175522746,24-08-2020,125.00,USD,"Received money from the friend. with reference ",,145.00,,,,"Friend.",,,,0.00
-TRANSFER-174549828,20-08-2020,20.17,USD,"Topped up balance",,20.17,,,,,,,,0.17
-TRANSFER-174549828,20-08-2020,-0.17,USD,"TransferWise Charges for: TRANSFER-174549828",,20.00,,,,,,,,0
+"TransferWise ID",Date,"Date Time",Amount,Currency,Description,"Payment Reference","Running Balance","Exchange From","Exchange To","Exchange Rate","Payer Name","Payee Name","Payee Account Number",Merchant,"Total fees"
+TRANSFER-175545673,24-08-2020,"24-08-2020 13:43:54",-357.38,USD,"Sent money to John Doe","Moving to Revolut",787.62,USD,EUR,0.84840,,"John Doe","LT21 1111 2222 3333 4444",,11.35
+TRANSFER-175545673,24-08-2020,"24-08-2020 08:12:37",-11.35,USD,"TransferWise Charges for: TRANSFER-175545673","Sending money",776.27,,,,,TransferWise,,,0
+TRANSFER-175522746,24-08-2020,"24-08-2020 19:27:05",125.00,USD,"Received money from the friend. with reference ",,145.00,,,,"Friend.",,,,0.00
+TRANSFER-174549828,20-08-2020,"20-08-2020 16:01:22",20.17,USD,"Topped up balance",,20.17,,,,,,,,0.17
+TRANSFER-174549828,20-08-2020,"20-08-2020 05:55:41",-0.17,USD,"TransferWise Charges for: TRANSFER-174549828",,20.00,,,,,,,,0

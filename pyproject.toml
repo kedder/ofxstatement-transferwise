@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ofxstatement-transferwise"
+version = "1.1.0.dev0"
+description = "Transferwise plugin for ofxstatement"
+readme = "README.md"
+license = "GPL-3.0-or-later"
+authors = [
+    {name = "Andrey Lebedev", email = "andrey@lebedev.lt"}
+]
+keywords = ["ofx", "banking", "statement"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Natural Language :: English",
+    "Topic :: Office/Business :: Financial :: Accounting",
+    "Topic :: Utilities",
+    "Environment :: Console",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "ofxstatement",
+]
+requires-python = ">=3.6"
+
+[project.urls]
+Homepage = "https://github.com/kedder/ofxstatement-transferwise"
+
+[project.entry-points.ofxstatement]
+transferwise = "ofxstatement_wise.wise:TransferwisePlugin"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.mypy]
+
+[tool.pycodestyle]
+max-line-length = 88
+
+[tool.black]
+line-length = 88
+target-version = ['py36']

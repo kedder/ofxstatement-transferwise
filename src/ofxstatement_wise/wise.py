@@ -24,14 +24,14 @@ class TransferwisePlugin(Plugin):
 class TransferwiseParser(CsvStatementParser):
     date_format: str = "%d-%m-%Y"
     mappings = {
-        "amount": 2,
+        "amount": 3,
         "date": 1,
-        "memo": 4,
+        "memo": 5,
         "refnum": 0,
     }
 
     def __init__(
-        self, fin: TextIO, currency: str = None, account_id: str = None
+        self, fin: TextIO, currency: str | None = None, account_id: str | None = None
     ) -> None:
         super().__init__(fin)
         self.currency = currency
@@ -55,7 +55,7 @@ class TransferwiseParser(CsvStatementParser):
         if sl is None:
             return None
 
-        ccy = line[3]
+        ccy = line[4]
         if ccy != self.currency:
             # Skip lines in some other currencies
             return None
