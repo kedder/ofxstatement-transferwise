@@ -36,4 +36,4 @@ jobs:
         pipenv run mypy src tests
     - name: Black
       run: |
-        pipenv run black --check setup.py src tests
+        pipenv run black --check src tests
