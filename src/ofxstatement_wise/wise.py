@@ -1,14 +1,14 @@
-from typing import Set, List, Iterable, TextIO, Optional
-import itertools
+from csv import DictReader
+from datetime import datetime
+from typing import Dict, Iterable, Optional
 from decimal import Decimal
 
 from ofxstatement.plugin import Plugin
-from ofxstatement.parser import CsvStatementParser
+from ofxstatement.parser import StatementParser
 from ofxstatement.statement import (
     Statement,
     StatementLine,
     BankAccount,
-    generate_unique_transaction_id,
 )
 
 
@@ -18,25 +18,17 @@ class TransferwisePlugin(Plugin):
     def get_parser(self, filename: str) -> "TransferwiseParser":
         default_ccy = self.settings.get("currency")
         account_id = self.settings.get("account")
-        return TransferwiseParser(open(filename, "rt"), default_ccy, account_id)
+        return TransferwiseParser(filename, default_ccy, account_id)
 
 
-class TransferwiseParser(CsvStatementParser):
-    date_format: str = "%d-%m-%Y"
-    mappings = {
-        "amount": 3,
-        "date": 1,
-        "memo": 5,
-        "refnum": 0,
-    }
-
+class TransferwiseParser(StatementParser[Dict[str, str]]):
     def __init__(
-        self, fin: TextIO, currency: str | None = None, account_id: str | None = None
+        self, filename: str, currency: str | None = None, account_id: str | None = None
     ) -> None:
-        super().__init__(fin)
+        super().__init__()
+        self.filename = filename
         self.currency = currency
         self.account_id = account_id
-        self._unique: Set[str] = set()
 
     def parse(self) -> Statement:
         stmt = super().parse()
@@ -44,26 +36,27 @@ class TransferwiseParser(CsvStatementParser):
         stmt.account_id = self.account_id
         return stmt
 
-    def split_records(self) -> Iterable[List[str]]:
-        items = super().split_records()
-        # Skip the header line
-        yield from itertools.islice(items, 1, None)
+    def split_records(self) -> Iterable[Dict[str, str]]:
+        with open(self.filename, "rt") as f:
+            yield from DictReader(f)
 
-    def parse_record(self, line: List[str]) -> Optional[StatementLine]:
+    def parse_record(self, line: Dict[str, str]) -> Optional[StatementLine]:
         """Parse given transaction line and return StatementLine object"""
-        sl = super().parse_record(line)
-        if sl is None:
-            return None
+        sl = StatementLine()
 
-        ccy = line[4]
-        if ccy != self.currency:
+        sl.id = line["TransferWise ID"]
+        sl.date = datetime.strptime(line["Date"], "%d-%m-%Y")
+        sl.memo = line["Description"]
+        sl.amount = Decimal(line["Amount"])
+
+        currency = line["Currency"]
+        if currency != self.currency:
             # Skip lines in some other currencies
             return None
 
         sl.memo = self._make_memo(line)
 
-        sl.id = generate_unique_transaction_id(sl, self._unique)
-        payee_acc_no = line[13]
+        payee_acc_no = line["Payee Account Number"]
         if payee_acc_no:
             sl.bank_account_to = BankAccount("", payee_acc_no)
 
@@ -71,12 +64,12 @@ class TransferwiseParser(CsvStatementParser):
         sl.trntype = "DEBIT" if sl.amount > Decimal(0) else "CREDIT"
         return sl
 
-    def _make_memo(self, line: List[str]) -> str:
-        descr = line[5]
-        payref = line[6]
-        exc_from = line[8]
-        exc_to = line[9]
-        exc_rate = line[10]
+    def _make_memo(self, line: Dict[str, str]) -> str:
+        descr = line["Description"]
+        payref = line["Payment Reference"]
+        exc_from = line["Exchange From"]
+        exc_to = line["Exchange To"]
+        exc_rate = line["Exchange Rate"]
 
         memo = descr
         if payref:
