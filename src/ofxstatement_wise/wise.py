@@ -45,7 +45,7 @@ class TransferwiseParser(StatementParser[Dict[str, str]]):
         sl = StatementLine()
 
         sl.id = line["TransferWise ID"]
-        sl.date = datetime.strptime(line["Date"], "%d-%m-%Y")
+        sl.date = datetime.strptime(line["Date Time"], "%d-%m-%Y %H:%M:%S.%f")
         sl.memo = line["Description"]
         sl.amount = Decimal(line["Amount"])
 
@@ -61,7 +61,7 @@ class TransferwiseParser(StatementParser[Dict[str, str]]):
             sl.bank_account_to = BankAccount("", payee_acc_no)
 
         assert sl.amount is not None
-        sl.trntype = "DEBIT" if sl.amount > Decimal(0) else "CREDIT"
+        sl.trntype = line["Transaction Type"]
         return sl
 
     def _make_memo(self, line: Dict[str, str]) -> str:
