@@ -63,7 +63,7 @@ class TransferwiseParser(CsvStatementParser):
         sl.memo = self._make_memo(line)
 
         sl.id = generate_unique_transaction_id(sl, self._unique)
-        payee_acc_no = line[12]
+        payee_acc_no = line[13]
         if payee_acc_no:
             sl.bank_account_to = BankAccount("", payee_acc_no)
 
@@ -72,11 +72,11 @@ class TransferwiseParser(CsvStatementParser):
         return sl
 
     def _make_memo(self, line: List[str]) -> str:
-        descr = line[4]
-        payref = line[5]
-        exc_from = line[7]
-        exc_to = line[8]
-        exc_rate = line[9]
+        descr = line[5]
+        payref = line[6]
+        exc_from = line[8]
+        exc_to = line[9]
+        exc_rate = line[10]
 
         memo = descr
         if payref:
